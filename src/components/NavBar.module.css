@@ -1,0 +1,23 @@
+* {
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.nav_container {
+  height: 35px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: green;
+}
+
+.nav_link {
+  font-size: 20px;
+  text-decoration: none;
+}
