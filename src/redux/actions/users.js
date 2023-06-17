@@ -20,7 +20,7 @@ export const postSignUp = (dataUser) => async (dispatch) => {
   try {
     const addUser = await axios.post(`${baseURL}/signup`, dataUser);
     dispatch(addDbUser(addUser.data.createUser));
-    console.log(addUser.data.message);
+
     if (addUser.data.message === "Registro exitoso") {
       alert("Registro exitoso");
     }
@@ -37,7 +37,7 @@ export const postSignIn = (dataUser) => async (dispatch) => {
   try {
     const userAuth = await axios.post(`${baseURL}/signin`, dataUser);
     dispatch(authToken(userAuth.data.token));
-    console.log(userAuth.data.message);
+
     if (userAuth.data.message === "Inicio de sesion exitoso") {
       alert("Inicio de sesion exitoso");
     }
@@ -50,29 +50,26 @@ export const postSignIn = (dataUser) => async (dispatch) => {
   }
 };
 
-export const postSignInGoogle = () => async () => {
+export const getSignInGoogle = () => async () => {
   try {
     const userAuthGoogle = await axios.get(`${baseURL}/auth/google`);
-    console.log(userAuthGoogle.data);
-    const authorizationUrl = userAuthGoogle.data;
-    window.location.href = authorizationUrl;
 
-    /* const getToken = await axios.get(`${baseURL}/auth/google/callback`);
-    console.log(getToken); */
+    window.location.href = userAuthGoogle.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const postGoogle = (urlData) => async () => {
-  console.log(urlData);
-  try {
-    const portCodeGogle = await axios.post(
-      `${baseURL}/auth/google/callback`,
-      urlData
-    );
-    console.log(portCodeGogle.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const postSignInGoogle =
+  (googleAuthorizationCode) => async (dispatch) => {
+    try {
+      const googleAuthorizationToken = await axios.post(
+        `${baseURL}/auth/google/callback`,
+        googleAuthorizationCode
+      );
+      console.log(googleAuthorizationToken.data);
+      dispatch(authToken(googleAuthorizationToken.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
