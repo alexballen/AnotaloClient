@@ -17,7 +17,6 @@ export const decodedToken = (token) => {
   if (!Object.keys(token).length) {
     return {
       message: "No hay token valido",
-      token: console.log(token),
     };
   }
   const decoded = jwt_decode(token);
