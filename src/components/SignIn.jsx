@@ -1,18 +1,12 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { postSignIn } from "../redux/actions/users.js";
-import {
-  handleSubmit,
-  decodedToken,
-  handleChange,
-} from "../services/services.js";
+import { handleSubmit, handleChange } from "../services/services.js";
+
 import s from "./SignIn.module.css";
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.token);
-
-  decodedToken(token);
 
   const [signInData, setSignInData] = useState({
     email: "",
