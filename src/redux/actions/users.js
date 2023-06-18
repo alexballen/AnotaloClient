@@ -60,16 +60,30 @@ export const getSignInGoogle = () => async () => {
   }
 };
 
-export const postSignInGoogle =
-  (googleAuthorizationCode) => async (dispatch) => {
-    try {
-      const googleAuthorizationToken = await axios.post(
-        `${baseURL}/auth/google/callback`,
-        googleAuthorizationCode
-      );
-      console.log(googleAuthorizationToken.data);
-      dispatch(authToken(googleAuthorizationToken.data));
-    } catch (error) {
-      console.log(error);
+export const postSignInGoogle = (googleAuthorizationCode) => async () => {
+  try {
+    const googleAuthorizationToken = await axios.post(
+      `${baseURL}/auth/google/callback`,
+      googleAuthorizationCode
+    );
+    console.log(googleAuthorizationToken.data);
+
+    localStorage.setItem(
+      "token",
+      JSON.stringify(googleAuthorizationToken.data)
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const saveToken = () => (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(authToken(token));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
