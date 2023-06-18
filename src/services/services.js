@@ -20,6 +20,6 @@ export const decodedToken = (token) => {
     };
   }
   const decoded = jwt_decode(token);
-  localStorage.setItem("token", JSON.stringify(token));
+  localStorage.setItem("token", JSON.stringify(decoded));
   return decoded;
 };
