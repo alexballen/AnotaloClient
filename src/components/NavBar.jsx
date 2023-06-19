@@ -18,7 +18,7 @@ const NavBar = () => {
                 </a>
               </div>
               <div className={s.signin_container}>
-                <a className={s.nav_link} href="/signin">
+                <a className={s.nav_link} href="/auth/google/callback">
                   SignIn
                 </a>
               </div>
