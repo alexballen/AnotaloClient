@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { postSignInGoogle } from "../redux/actions/users.js";
 import { useLocation } from "react-router-dom";
 import SignIn from "./SignIn.jsx";
-import Home from "./Home.jsx";
+import Notes from "./Notes.jsx";
+import s from "./GoogleCallback.module.css";
 
 const GoogleCallback = () => {
   const dispatch = useDispatch();
@@ -35,9 +36,13 @@ const GoogleCallback = () => {
   }, []);
 
   if (redirectToHome && Object.keys(token).length) {
-    return <Home />;
+    return <Notes />;
   } else if (googleAuthorizationCode) {
-    return <div>Cargando...</div>;
+    return (
+      <div className={s.container}>
+        <h1>Cargando...</h1>
+      </div>
+    );
   } else {
     return <SignIn />;
   }
