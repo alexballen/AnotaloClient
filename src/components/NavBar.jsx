@@ -8,8 +8,13 @@ const NavBar = () => {
           <nav>
             <div className={s.nav_container}>
               <div className={s.home_container}>
-                <a className={s.nav_link} href="/home">
+                <a className={s.nav_link} href="/">
                   Home
+                </a>
+              </div>
+              <div className={s.notes_container}>
+                <a className={s.nav_link} href="/notes">
+                  Notes
                 </a>
               </div>
               <div className={s.signup_container}>
@@ -18,8 +23,13 @@ const NavBar = () => {
                 </a>
               </div>
               <div className={s.signin_container}>
-                <a className={s.nav_link} href="/auth/google/callback">
+                <a className={s.nav_link} href="/signin">
                   SignIn
+                </a>
+              </div>
+              <div className={s.signin_container}>
+                <a className={s.nav_link} href="/logout">
+                  Logout
                 </a>
               </div>
             </div>
