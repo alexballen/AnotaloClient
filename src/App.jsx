@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar";
 import SignInGoogle from "./components/SignInGoogle";
 import GoogleCallback from "./components/GoogleCallback";
 import Notes from "./components/Notes";
+import Logout from "./components/Logout";
 import "./App.css";
 
 function App() {
@@ -29,20 +30,18 @@ function App() {
       <NavBar />
 
       <Routes>
-        <Route path="/auth/google/callback" element={<GoogleCallback />} />
+        <Route exact path="/" element={<Home />} />
+        <Route path="/auth/google" element={<SignInGoogle />} />
+        <Route path="/signin" element={<GoogleCallback />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/logout" element={<Logout />} />
         <Route
           element={
-            <ProtectedRoute
-              isAllowed={!!session}
-              redirectTo="/auth/google/callback"
-            />
+            <ProtectedRoute isAllowed={!!session} redirectTo="/signin" />
           }
         >
-          <Route path="/home" element={<Home />} />
           <Route path="/notes" element={<Notes />} />
         </Route>
-        <Route path="/auth/google" element={<SignInGoogle />} />
-        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </>
   );
