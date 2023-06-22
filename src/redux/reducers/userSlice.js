@@ -5,6 +5,7 @@ export const userSlice = createSlice({
   initialState: {
     allUsers: [],
     token: {},
+    decoded: {},
   },
   reducers: {
     allDbUsers: (state, action) => {
@@ -19,9 +20,13 @@ export const userSlice = createSlice({
     authToken: (state, action) => {
       state.token = action.payload;
     },
+    decodedToken: (state, action) => {
+      state.decoded = action.payload;
+    },
   },
 });
 
-export const { allDbUsers, addDbUser, authToken } = userSlice.actions;
+export const { allDbUsers, addDbUser, authToken, decodedToken } =
+  userSlice.actions;
 
 export default userSlice.reducer;
