@@ -17,7 +17,7 @@ const GoogleCallback = () => {
   const params = new URLSearchParams(location.search);
   const googleAuthorizationCode = params.get("code");
   const googleVerificationCode = {
-    googleAuthorizationCode,
+    code: googleAuthorizationCode,
   };
 
   useEffect(() => {
