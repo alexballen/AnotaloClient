@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
-
 export const notesSlice = createSlice({
   name: "notes",
-  initialState,
-  reducers: {},
+  initialState: {
+    allNotes: [],
+  },
+  reducers: {
+    allDbNotes: (state, action) => {
+      state.allNotes = action.payload;
+    },
+  },
 });
 
-export const {} = notesSlice.actions;
+export const { allDbNotes } = notesSlice.actions;
 
 export default notesSlice.reducer;
