@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { saveToken, validateToken } from "../redux/actions/users";
 import { getDbNotes } from "../redux/actions/notes";
 import PopUp from "./PopUp";
@@ -48,11 +49,12 @@ const Notes = () => {
             <main>
               <div className={s.container}>
                 <section>
-                  <PopUp
+                  {/* <PopUp
                     value={{ idUser }}
                     Component={AddNote}
                     title={"Crear Nota"}
-                  />
+                  /> */}
+                  <Link to="/addnote">Add Note</Link>
                 </section>
               </div>
             </main>
@@ -79,11 +81,12 @@ const Notes = () => {
                 </div>
               </section>
               <section>
-                <PopUp
+                {/* <PopUp
                   value={{ notes }}
                   Component={EditNote}
                   title={"Editar Nota"}
-                />
+                /> */}
+                <Link to={"/editnote/" + notes.id}>Edit Note</Link>
               </section>
             </div>
           );
