@@ -1,5 +1,10 @@
 import axios from "axios";
-import { allDbNotes } from "../reducers/notesSlice";
+import {
+  allDbNotes,
+  addNote,
+  deleteNote,
+  patchNote,
+} from "../reducers/notesSlice";
 
 const baseURL = "http://localhost:3001";
 
@@ -18,7 +23,7 @@ export const createNoteDb = (idUser, objCreateNote) => async (dispatch) => {
       `${baseURL}/notes/${idUser}`,
       objCreateNote
     );
-    console.log(postNote);
+    dispatch(addNote(postNote.data));
   } catch (error) {
     console.log(error);
   }
@@ -26,8 +31,8 @@ export const createNoteDb = (idUser, objCreateNote) => async (dispatch) => {
 
 export const deleteNoteDb = (idNote) => async (dispatch) => {
   try {
-    const deleteNote = await axios.delete(`${baseURL}/notes/${idNote}`);
-    console.log(deleteNote);
+    await axios.delete(`${baseURL}/notes/${idNote}`);
+    dispatch(deleteNote(idNote));
   } catch (error) {
     console.log(error);
   }
@@ -39,7 +44,7 @@ export const editNoteDb = (idNote, dataNewNote) => async (dispatch) => {
       `${baseURL}/notes/${idNote}`,
       dataNewNote
     );
-    console.log(editNote);
+    dispatch(patchNote(editNote.data.data));
   } catch (error) {
     console.log(error);
   }
