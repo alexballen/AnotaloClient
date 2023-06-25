@@ -21,7 +21,6 @@ export const notesSlice = createSlice({
     },
     patchNote: (state, action) => {
       const updatedNote = action.payload;
-      console.log(updatedNote);
       state.allNotes = state.allNotes.map((note) =>
         note.id === updatedNote.id ? updatedNote : note
       );
