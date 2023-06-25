@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { editNoteDb } from "../redux/actions/notes";
+import DeleteNote from "./DeleteNote";
 import s from "./AddNote.module.css";
 
-const EditNote = ({ note }) => {
+const EditNote = ({ notes }) => {
   const dispatch = useDispatch();
 
   const [editedNote, setEditedNote] = useState({
-    name: note.name,
-    description: note.description,
-    importance: note.importance,
+    name: notes.name,
+    description: notes.description,
+    importance: notes.importance,
   });
+  console.log(editedNote);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +23,7 @@ const EditNote = ({ note }) => {
     e.preventDefault();
   };
 
-  const idUser = note.id;
+  const idUser = notes.id;
 
   const handleEditNote = () => {
     dispatch(editNoteDb(idUser, editedNote));
@@ -64,6 +66,7 @@ const EditNote = ({ note }) => {
               </div>
               <div>
                 <button onClick={handleEditNote}>Guardar</button>
+                <DeleteNote idNote={notes.id} />
               </div>
             </form>
           </section>
