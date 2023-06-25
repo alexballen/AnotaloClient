@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createNoteDb } from "../redux/actions/notes";
+import { closingPopUp } from "../redux/actions/popUp";
 import s from "./AddNote.module.css";
 
 const AddNote = ({ idUser }) => {
   const dispatch = useDispatch();
+
+  const { popUpClose } = useSelector((state) => state.popUpClose);
 
   const [note, setNote] = useState({
     name: "",
@@ -19,6 +22,12 @@ const AddNote = ({ idUser }) => {
 
   const handleCreateNote = () => {
     dispatch(createNoteDb(idUser, note));
+    setNote({
+      name: "",
+      description: "",
+      importance: "",
+    });
+    dispatch(closingPopUp(true));
   };
 
   const handleSubmit = (e) => {
