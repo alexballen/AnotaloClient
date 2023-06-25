@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveToken, validateToken } from "../redux/actions/users";
-import { getDbNotes, deleteNoteDb } from "../redux/actions/notes";
+import { getDbNotes } from "../redux/actions/notes";
 import PopUp from "./PopUp";
-import PopUpEdit from "./PopUpEdit";
+import AddNote from "./AddNote";
+import EditNote from "./EditNote";
+import DeleteNote from "./DeleteNote";
 import s from "./Notes.module.css";
 
 const Notes = () => {
@@ -37,10 +39,6 @@ const Notes = () => {
 
   const idUser = decoded.id;
 
-  const handleDeleteNote = (idNote) => {
-    dispatch(deleteNoteDb(idNote));
-  };
-
   return (
     <main>
       <div className={s.container}>
@@ -50,7 +48,11 @@ const Notes = () => {
             <main>
               <div className={s.container}>
                 <section>
-                  <PopUp idUser={idUser} />
+                  <PopUp
+                    value={{ idUser }}
+                    Component={AddNote}
+                    title={"Crear Nota"}
+                  />
                 </section>
               </div>
             </main>
@@ -71,9 +73,17 @@ const Notes = () => {
               <div>
                 <p>IMPORTANCE: {notes.importance}</p>
               </div>
-              <button onClick={() => handleDeleteNote(notes.id)}>Delete</button>
               <section>
-                <PopUpEdit note={notes} />
+                <div>
+                  <DeleteNote idNote={notes.id} />
+                </div>
+              </section>
+              <section>
+                <PopUp
+                  value={{ notes }}
+                  Component={EditNote}
+                  title={"Editar Nota"}
+                />
               </section>
             </div>
           );
