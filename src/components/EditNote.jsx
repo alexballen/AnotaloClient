@@ -1,33 +1,84 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { editNoteDb } from "../redux/actions/notes";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { saveToken, validateToken } from "../redux/actions/users";
+import { editNoteDb, getDbNotes } from "../redux/actions/notes";
 import DeleteNote from "./DeleteNote";
 import s from "./AddNote.module.css";
 
-const EditNote = ({ notes }) => {
+const EditNote = (/* { notes } */) => {
   const dispatch = useDispatch();
+  const { id } = useParams();
+
+  const { token } = useSelector((state) => state.token);
+  const { decoded } = useSelector((state) => state.decoded);
+  const { allNotes } = useSelector((state) => state.allNotes);
+
+  useEffect(() => {
+    dispatch(saveToken());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (Object.keys(token).length) {
+      const objToken = {
+        token,
+      };
+      dispatch(validateToken(objToken));
+    }
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    if (decoded.email) {
+      const searchNotesUser = {
+        email: decoded.email,
+      };
+      dispatch(getDbNotes(searchNotesUser));
+    }
+  }, [dispatch, decoded]);
+
+  useEffect(() => {
+    if (Object.keys(allNotes).length > 0) {
+      const searchNote = allNotes.find((note) => note.id === id);
+      setEditedNote({
+        id: searchNote.id,
+        name: searchNote.name,
+        description: searchNote.description,
+        importance: searchNote.importance,
+      });
+    }
+  }, [allNotes]);
 
   const [editedNote, setEditedNote] = useState({
-    name: notes.name,
-    description: notes.description,
-    importance: notes.importance,
+    id: "",
+    name: "",
+    description: "",
+    importance: "",
   });
-  console.log(editedNote);
+
+  const [isDirty, setIsDirty] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedNote((prevNote) => ({ ...prevNote, [name]: value }));
+    setIsDirty(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
   };
 
-  const idUser = notes.id;
+  const idUser = editedNote?.id;
 
   const handleEditNote = () => {
     dispatch(editNoteDb(idUser, editedNote));
   };
+
+  useEffect(() => {
+    if (isDirty) {
+      handleEditNote();
+      setIsDirty(false);
+    }
+  }, [isDirty]);
 
   return (
     <div>
@@ -65,8 +116,7 @@ const EditNote = ({ notes }) => {
                 </div>
               </div>
               <div>
-                <button onClick={handleEditNote}>Guardar</button>
-                <DeleteNote idNote={notes.id} />
+                <DeleteNote idNote={editedNote?.id} />
               </div>
             </form>
           </section>
