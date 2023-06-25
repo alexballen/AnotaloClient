@@ -10,6 +10,8 @@ import SignInGoogle from "./components/SignInGoogle";
 import GoogleCallback from "./components/GoogleCallback";
 import Notes from "./components/Notes";
 import Logout from "./components/Logout";
+import AddNote from "./components/AddNote";
+import EditNote from "./components/EditNote";
 import "./App.css";
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
         <Route path="/signin" element={<GoogleCallback />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/addnote" element={<AddNote />} />
+        <Route path="/editnote/:id" element={<EditNote />} />
         <Route
           element={
             <ProtectedRoute isAllowed={!!session} redirectTo="/signin" />
