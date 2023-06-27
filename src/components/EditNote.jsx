@@ -6,7 +6,7 @@ import { editNoteDb, getDbNotes } from "../redux/actions/notes";
 import DeleteNote from "./DeleteNote";
 import s from "./AddNote.module.css";
 
-const EditNote = (/* { notes } */) => {
+const EditNote = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
