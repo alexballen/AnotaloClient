@@ -23,9 +23,9 @@ function App() {
   }, [dispatch]);
 
   if (token.length > 0) {
-    localStorage.setItem("session", true);
+    localStorage.setItem("userSession", true);
   }
-  const session = localStorage.getItem("session");
+  const session = localStorage.getItem("userSession");
 
   return (
     <>
