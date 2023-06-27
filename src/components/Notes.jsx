@@ -3,9 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { saveToken, validateToken } from "../redux/actions/users";
 import { getDbNotes } from "../redux/actions/notes";
-import PopUp from "./PopUp";
-import AddNote from "./AddNote";
-import EditNote from "./EditNote";
 import DeleteNote from "./DeleteNote";
 import s from "./Notes.module.css";
 
@@ -38,22 +35,14 @@ const Notes = () => {
     }
   }, [dispatch, decoded]);
 
-  const idUser = decoded.id;
-
   return (
     <main>
       <div className={s.container}>
         <section>
           <div>
-            <h1>AddNote</h1>
             <main>
               <div className={s.container}>
                 <section>
-                  {/* <PopUp
-                    value={{ idUser }}
-                    Component={AddNote}
-                    title={"Crear Nota"}
-                  /> */}
                   <Link to="/addnote">Add Note</Link>
                 </section>
               </div>
@@ -61,33 +50,25 @@ const Notes = () => {
           </div>
         </section>
         {allNotes?.map((notes, index) => {
+          const utcDateTime = notes.updatedAt;
+          const date = new Date(utcDateTime);
+          const colombiaDateTime = date.toLocaleString("en-US", {
+            timeZone: "America/Bogota",
+          });
+
           return (
             <div key={index}>
-              <div>
-                <p>ID: {notes.id}</p>
-              </div>
-              <div>
-                <p>NAME: {notes.name}</p>
-              </div>
-              <div className={s.description_container}>
-                <p>DESCRIPTION: {notes.description}</p>
-              </div>
-              <div>
-                <p>IMPORTANCE: {notes.importance}</p>
-              </div>
-              <section>
+              <Link to={"/editnote/" + notes.id}>
                 <div>
-                  <DeleteNote idNote={notes.id} />
+                  <p>NAME: {notes.name}</p>
                 </div>
-              </section>
-              <section>
-                {/* <PopUp
-                  value={{ notes }}
-                  Component={EditNote}
-                  title={"Editar Nota"}
-                /> */}
-                <Link to={"/editnote/" + notes.id}>Edit Note</Link>
-              </section>
+                <div>
+                  <p>{colombiaDateTime}</p>
+                </div>
+              </Link>
+              <div>
+                <DeleteNote idNote={notes.id} />
+              </div>
             </div>
           );
         })}
