@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { validateToken } from "../redux/actions/users";
-import { createNoteDb } from "../redux/actions/notes";
+import { createNoteDb, getDbNotes } from "../redux/actions/notes";
 import s from "./AddNote.module.css";
 
 const AddNote = () => {
@@ -20,6 +20,15 @@ const AddNote = () => {
       dispatch(validateToken(objToken));
     }
   }, [dispatch, token]);
+
+  useEffect(() => {
+    if (decoded.email) {
+      const searchNotesUser = {
+        email: decoded.email,
+      };
+      dispatch(getDbNotes(searchNotesUser));
+    }
+  }, [dispatch, decoded]);
 
   const [note, setNote] = useState({
     name: "",
@@ -53,6 +62,7 @@ const AddNote = () => {
     };
 
     const links = document.querySelectorAll("a");
+
     links.forEach((link) => {
       link.addEventListener("click", handleLinkClick);
     });
@@ -66,13 +76,24 @@ const AddNote = () => {
 
   const handleCreateNote = () => {
     if (note.name || note.description) {
-      dispatch(createNoteDb(decoded.id, note));
+      let updatedNote = { ...note };
+
+      if (!note.name && note.description) {
+        const getTextPart = note.description.split(" ");
+        const unir = getTextPart.slice(0, 4).join(" ");
+        updatedNote.name = unir;
+      }
+
+      dispatch(createNoteDb(decoded.id, updatedNote));
+
+      setNote({
+        name: "",
+        description: "",
+        importance: "",
+      });
+
+      navigate("/notes");
     }
-    setNote({
-      name: "",
-      description: "",
-      importance: "",
-    });
   };
 
   useEffect(() => {
