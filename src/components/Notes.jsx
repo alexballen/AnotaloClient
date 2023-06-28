@@ -10,7 +10,7 @@ const Notes = () => {
   const dispatch = useDispatch();
 
   const { token } = useSelector((state) => state.token);
-  const { decoded } = useSelector((state) => state.decoded);
+  const { decodedToken } = useSelector((state) => state.decodedToken);
   const { allNotes } = useSelector((state) => state.allNotes);
 
   useEffect(() => {
@@ -19,21 +19,21 @@ const Notes = () => {
 
   useEffect(() => {
     if (Object.keys(token).length) {
-      const objToken = {
+      const tokenData = {
         token,
       };
-      dispatch(validateToken(objToken));
+      dispatch(validateToken(tokenData));
     }
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (decoded.email) {
-      const searchNotesUser = {
-        email: decoded.email,
+    if (decodedToken.email) {
+      const userEmail = {
+        email: decodedToken.email,
       };
-      dispatch(getDbNotes(searchNotesUser));
+      dispatch(getDbNotes(userEmail));
     }
-  }, [dispatch, decoded]);
+  }, [dispatch, decodedToken]);
 
   return (
     <main>
@@ -43,14 +43,14 @@ const Notes = () => {
             <main>
               <div className={s.container}>
                 <section>
-                  <Link to="/addnote">Add Note</Link>
+                  <Link to="/addnote">Crear Nota</Link>
                 </section>
               </div>
             </main>
           </div>
         </section>
-        {allNotes?.map((notes, index) => {
-          const utcDateTime = notes.updatedAt;
+        {allNotes?.map((note, index) => {
+          const utcDateTime = note.updatedAt;
           const date = new Date(utcDateTime);
           const colombiaDateTime = date.toLocaleString("en-US", {
             timeZone: "America/Bogota",
@@ -58,16 +58,16 @@ const Notes = () => {
 
           return (
             <div key={index}>
-              <Link to={"/editnote/" + notes.id}>
+              <Link to={"/editnote/" + note.id}>
                 <div>
-                  <p>NAME: {notes.name}</p>
+                  <p>Titulo: {note.title}</p>
                 </div>
                 <div>
                   <p>{colombiaDateTime}</p>
                 </div>
               </Link>
               <div>
-                <DeleteNote idNote={notes.id} />
+                <DeleteNote noteId={note.id} />
               </div>
             </div>
           );
