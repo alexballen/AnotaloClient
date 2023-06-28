@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { saveToken, validateToken } from "../redux/actions/users";
-import { editNoteDb, getDbNotes } from "../redux/actions/notes";
+import { patchEditNote, getDbNotes } from "../redux/actions/notes";
 import DeleteNote from "./DeleteNote";
 import s from "./AddNote.module.css";
 
 const EditNote = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { noteId } = useParams();
 
   const { token } = useSelector((state) => state.token);
-  const { decoded } = useSelector((state) => state.decoded);
+  const { decodedToken } = useSelector((state) => state.decodedToken);
   const { allNotes } = useSelector((state) => state.allNotes);
 
   useEffect(() => {
@@ -20,37 +20,37 @@ const EditNote = () => {
 
   useEffect(() => {
     if (Object.keys(token).length) {
-      const objToken = {
+      const tokenData = {
         token,
       };
-      dispatch(validateToken(objToken));
+      dispatch(validateToken(tokenData));
     }
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (decoded.email) {
-      const searchNotesUser = {
-        email: decoded.email,
+    if (decodedToken.email) {
+      const userEmail = {
+        email: decodedToken.email,
       };
-      dispatch(getDbNotes(searchNotesUser));
+      dispatch(getDbNotes(userEmail));
     }
-  }, [dispatch, decoded]);
+  }, [dispatch, decodedToken]);
 
   useEffect(() => {
     if (Object.keys(allNotes).length > 0) {
-      const searchNote = allNotes.find((note) => note.id === id);
-      setEditedNote({
-        id: searchNote.id,
-        name: searchNote.name,
-        description: searchNote.description,
-        importance: searchNote.importance,
+      const getNote = allNotes.find((note) => note.id === noteId);
+      setEditNote({
+        id: getNote.id,
+        title: getNote.title,
+        description: getNote.description,
+        importance: getNote.importance,
       });
     }
   }, [allNotes]);
 
-  const [editedNote, setEditedNote] = useState({
+  const [editNote, setEditNote] = useState({
     id: "",
-    name: "",
+    title: "",
     description: "",
     importance: "",
   });
@@ -59,7 +59,7 @@ const EditNote = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setEditedNote((prevNote) => ({ ...prevNote, [name]: value }));
+    setEditNote((prevNote) => ({ ...prevNote, [name]: value }));
     setIsDirty(true);
   };
 
@@ -67,10 +67,10 @@ const EditNote = () => {
     e.preventDefault();
   };
 
-  const idUser = editedNote?.id;
+  const userId = editNote?.id;
 
   const handleEditNote = () => {
-    dispatch(editNoteDb(idUser, editedNote));
+    dispatch(patchEditNote(userId, editNote));
   };
 
   useEffect(() => {
@@ -91,8 +91,8 @@ const EditNote = () => {
                   <input
                     type="text"
                     placeholder="Titulo"
-                    name="name"
-                    value={editedNote.name}
+                    name="title"
+                    value={editNote?.title}
                     onChange={handleChange}
                   />
                 </div>
@@ -101,7 +101,7 @@ const EditNote = () => {
                     type="text"
                     placeholder="Descripcion"
                     name="description"
-                    value={editedNote.description}
+                    value={editNote?.description}
                     onChange={handleChange}
                   />
                 </div>
@@ -110,13 +110,13 @@ const EditNote = () => {
                     type="text"
                     placeholder="Importancia"
                     name="importance"
-                    value={editedNote.importance}
+                    value={editNote?.importance}
                     onChange={handleChange}
                   />
                 </div>
               </div>
               <div>
-                <DeleteNote idNote={editedNote?.id} />
+                <DeleteNote noteId={editNote?.id} />
               </div>
             </form>
           </section>
