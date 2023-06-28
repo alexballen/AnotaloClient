@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postSignInGoogle } from "../redux/actions/users.js";
 import { useLocation } from "react-router-dom";
+import { postSignInGoogle } from "../redux/actions/users.js";
 import SignIn from "./SignIn.jsx";
 import Notes from "./Notes.jsx";
 import s from "./GoogleCallback.module.css";
@@ -30,7 +30,6 @@ const GoogleCallback = () => {
   useEffect(() => {
     if (googleAuthorizationCode) {
       const timer = setTimeout(() => {}, 1000);
-
       return () => clearTimeout(timer);
     }
   }, []);
