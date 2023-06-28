@@ -4,8 +4,8 @@ const Home = () => {
   return (
     <main>
       <div className={s.container}>
-        <h1>home</h1>
-        <h3>Bienvenidos al home la intro e informacion de la App</h3>
+        <h1>Inicio</h1>
+        <h3>Bienvenidos al inicio, la intro e informacion de la App</h3>
       </div>
     </main>
   );
