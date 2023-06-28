@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { FcGoogle } from "react-icons/fc";
 import { getSignInGoogle } from "../redux/actions/users";
-import s from "./SignUp.module.css";
+import s from "./SignInGoogle.module.css";
 
 const SignInGoogle = () => {
   const dispatch = useDispatch();
