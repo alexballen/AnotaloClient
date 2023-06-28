@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { validateToken } from "../redux/actions/users";
-import { createNoteDb, getDbNotes } from "../redux/actions/notes";
+import { postCreateNote, getDbNotes } from "../redux/actions/notes";
 import s from "./AddNote.module.css";
 
 const AddNote = () => {
@@ -10,35 +10,35 @@ const AddNote = () => {
   const navigate = useNavigate();
 
   const { token } = useSelector((state) => state.token);
-  const { decoded } = useSelector((state) => state.decoded);
+  const { decodedToken } = useSelector((state) => state.decodedToken);
 
   useEffect(() => {
     if (Object.keys(token).length) {
-      const objToken = {
+      const tokenData = {
         token,
       };
-      dispatch(validateToken(objToken));
+      dispatch(validateToken(tokenData));
     }
   }, [dispatch, token]);
 
   useEffect(() => {
-    if (decoded.email) {
-      const searchNotesUser = {
-        email: decoded.email,
+    if (decodedToken.email) {
+      const userEmail = {
+        email: decodedToken.email,
       };
-      dispatch(getDbNotes(searchNotesUser));
+      dispatch(getDbNotes(userEmail));
     }
-  }, [dispatch, decoded]);
+  }, [dispatch, decodedToken]);
 
   const [note, setNote] = useState({
-    name: "",
+    title: "",
     description: "",
     importance: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if ((name === "name" || name === "description") && !note.importance) {
+    if ((name === "title" || name === "description") && !note.importance) {
       setNote((prevNote) => ({
         ...prevNote,
         [name]: value,
@@ -53,7 +53,7 @@ const AddNote = () => {
     const handleLinkClick = (event) => {
       event.preventDefault();
 
-      if (note.name.length > 0 || note.description.length > 0) {
+      if (note.title.length > 0 || note.description.length > 0) {
         handleCreateNote();
       }
 
@@ -75,19 +75,19 @@ const AddNote = () => {
   }, [navigate, note]);
 
   const handleCreateNote = () => {
-    if (note.name || note.description) {
+    if (note.title || note.description) {
       let updatedNote = { ...note };
 
-      if (!note.name && note.description) {
-        const getTextPart = note.description.split(" ");
-        const unir = getTextPart.slice(0, 4).join(" ");
-        updatedNote.name = unir;
+      if (!note.title && note.description) {
+        const getPartOfText = note.description.split(" ");
+        const getAndBindText = getPartOfText.slice(0, 4).join(" ");
+        updatedNote.title = getAndBindText;
       }
 
-      dispatch(createNoteDb(decoded.id, updatedNote));
+      dispatch(postCreateNote(decodedToken.id, updatedNote));
 
       setNote({
-        name: "",
+        title: "",
         description: "",
         importance: "",
       });
@@ -98,7 +98,7 @@ const AddNote = () => {
 
   useEffect(() => {
     const handlePopstate = () => {
-      if (note.name.length > 0 || note.description.length > 0) {
+      if (note.title.length > 0 || note.description.length > 0) {
         handleCreateNote();
       }
     };
@@ -119,8 +119,8 @@ const AddNote = () => {
                   <input
                     type="text"
                     placeholder="Titulo"
-                    name="name"
-                    value={note.name}
+                    name="title"
+                    value={note.title}
                     onChange={handleChange}
                   />
                 </div>
@@ -145,7 +145,7 @@ const AddNote = () => {
               </div>
               <div>
                 <button type="button" onClick={handleCreateNote}>
-                  Crear Nota Nueva
+                  Crear Nota
                 </button>
               </div>
             </form>
