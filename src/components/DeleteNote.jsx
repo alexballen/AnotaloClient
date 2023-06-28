@@ -1,19 +1,19 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteNoteDb } from "../redux/actions/notes";
+import { deleteNote } from "../redux/actions/notes";
 
-const DeleteNote = ({ idNote }) => {
+const DeleteNote = ({ noteId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleDeleteNote = () => {
     navigate("/notes");
-    dispatch(deleteNoteDb(idNote));
+    dispatch(deleteNote(noteId));
   };
 
   return (
     <div>
-      <button onClick={handleDeleteNote}>Elimina Nota</button>
+      <button onClick={handleDeleteNote}>Eliminar Nota</button>
     </div>
   );
 };
