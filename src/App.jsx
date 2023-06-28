@@ -25,7 +25,7 @@ function App() {
   if (token.length > 0) {
     localStorage.setItem("userSession", true);
   }
-  const session = localStorage.getItem("userSession");
+  const userSession = localStorage.getItem("userSession");
 
   return (
     <>
@@ -38,10 +38,10 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/addnote" element={<AddNote />} />
-        <Route path="/editnote/:id" element={<EditNote />} />
+        <Route path="/editnote/:noteId" element={<EditNote />} />
         <Route
           element={
-            <ProtectedRoute isAllowed={!!session} redirectTo="/signin" />
+            <ProtectedRoute isAllowed={!!userSession} redirectTo="/signin" />
           }
         >
           <Route path="/notes" element={<Notes />} />
