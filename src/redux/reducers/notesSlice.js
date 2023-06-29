@@ -6,20 +6,20 @@ export const notesSlice = createSlice({
     allNotes: [],
   },
   reducers: {
-    allDbNotes: (state, action) => {
+    getAllDbNotes: (state, action) => {
       state.allNotes = action.payload;
     },
-    addNote: (state, action) => {
+    createNoteInDb: (state, action) => {
       return {
         ...state,
         allNotes: [...state.allNotes, action.payload],
       };
     },
-    deleteNote: (state, action) => {
+    deleteNoteInDb: (state, action) => {
       const noteId = action.payload;
       state.allNotes = state.allNotes.filter((note) => note.id !== noteId);
     },
-    patchNote: (state, action) => {
+    editNoteInDb: (state, action) => {
       const updatedNote = action.payload;
       state.allNotes = state.allNotes.map((note) =>
         note.id === updatedNote.id ? updatedNote : note
@@ -28,7 +28,7 @@ export const notesSlice = createSlice({
   },
 });
 
-export const { allDbNotes, addNote, deleteNote, patchNote } =
+export const { getAllDbNotes, createNoteInDb, deleteNoteInDb, editNoteInDb } =
   notesSlice.actions;
 
 export default notesSlice.reducer;
