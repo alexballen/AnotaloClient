@@ -1,12 +1,12 @@
 import jwt_decode from "jwt-decode";
 
-export const handleSubmit = (e, dispatch, action, data) => {
-  e.preventDefault();
+export const handleSubmit = (event, dispatch, action, data) => {
+  event.preventDefault();
   dispatch(action(data));
 };
 
-export const handleChange = (e, setState, state) => {
-  const { value, name } = e.target;
+export const handleChange = (event, setState, state) => {
+  const { value, name } = event.target;
   setState({
     ...state,
     [name]: value,
