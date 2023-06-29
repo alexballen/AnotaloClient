@@ -12,12 +12,40 @@
   height: 35px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  background-color: green;
+  background-color: rgb(30, 30, 33);
+}
+
+.nav_der_container {
+  display: flex;
+  flex-direction: row;
+}
+
+.home_container {
+  margin: 5px;
+  margin-left: 10px;
+}
+
+.notes_container {
+  margin: 5px;
+}
+
+.nav_izq_container {
+  display: flex;
+  flex-direction: row;
+}
+
+.logout_container {
+  margin-right: 10px;
+}
+
+.signin_container {
+  margin-right: 10px;
 }
 
 .nav_link {
   font-size: 20px;
   text-decoration: none;
+  color: #fff;
 }
