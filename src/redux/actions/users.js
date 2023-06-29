@@ -1,17 +1,13 @@
 import axios from "axios";
-import {
-  allDbUsers,
-  addDbUser,
-  authToken,
-  decodedToken,
-} from "../reducers/userSlice.js";
+import { getAllDbUsers, createUserInDb } from "../reducers/userSlice.js";
+import { getAuthToken, setDecodedToken } from "../reducers/tokenSlice.js";
 
 const baseURL = "http://localhost:3001";
 
 export const getDbUsers = () => async (dispatch) => {
   try {
     const getUsers = await axios.get(`${baseURL}/user`);
-    dispatch(allDbUsers(getUsers.data));
+    dispatch(getAllDbUsers(getUsers.data));
   } catch (error) {
     if (error.response) {
       console.log(error.response.data.error);
@@ -21,14 +17,10 @@ export const getDbUsers = () => async (dispatch) => {
   }
 };
 
-export const postSignUp = (dataUser) => async (dispatch) => {
+export const postSignUp = (userData) => async (dispatch) => {
   try {
-    const addUser = await axios.post(`${baseURL}/signup`, dataUser);
-    dispatch(addDbUser(addUser.data.createUser));
-
-    if (addUser.data.message === "Registro exitoso") {
-      alert("Registro exitoso");
-    }
+    const createUser = await axios.post(`${baseURL}/signup`, userData);
+    dispatch(createUserInDb(createUser.data.createUser));
   } catch (error) {
     if (error.response) {
       console.log(error.response.data.error);
@@ -38,19 +30,14 @@ export const postSignUp = (dataUser) => async (dispatch) => {
   }
 };
 
-export const postSignIn = (dataUser) => async (dispatch) => {
+export const postSignIn = (userData) => async (dispatch) => {
   try {
-    const userAuth = await axios.post(`${baseURL}/signin`, dataUser);
+    const userAuth = await axios.post(`${baseURL}/signin`, userData);
 
     localStorage.setItem("token", userAuth.data.token);
+    localStorage.setItem("userSession", true);
 
-    localStorage.setItem("session", true);
-
-    dispatch(authToken(userAuth.data.token));
-
-    /*  if (userAuth.data.message === "Inicio de sesion exitoso") {
-      alert("Inicio de sesion exitoso");
-    } */
+    dispatch(getAuthToken(userAuth.data.token));
   } catch (error) {
     if (error.response) {
       console.log(error.response.data.error);
@@ -62,11 +49,15 @@ export const postSignIn = (dataUser) => async (dispatch) => {
 
 export const getSignInGoogle = () => async () => {
   try {
-    const userAuthGoogle = await axios.get(`${baseURL}/auth/google`);
+    const googleUserAuth = await axios.get(`${baseURL}/auth/google`);
 
-    window.location.href = userAuthGoogle.data;
+    window.location.href = googleUserAuth.data;
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      console.log(error.response.data.error);
+    } else {
+      console.log(error.message);
+    }
   }
 };
 
@@ -77,32 +68,45 @@ export const postSignInGoogle =
         `${baseURL}/signin`,
         googleAuthorizationCode
       );
+
       localStorage.setItem("token", googleAuthorizationToken.data);
+      localStorage.setItem("userSession", true);
 
-      localStorage.setItem("session", true);
-
-      dispatch(authToken(googleAuthorizationToken.data));
+      dispatch(getAuthToken(googleAuthorizationToken.data));
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        console.log(error.response.data.error);
+      } else {
+        console.log(error.message);
+      }
     }
   };
 
 export const saveToken = () => (dispatch) => {
   try {
     const token = localStorage.getItem("token");
+
     if (token) {
-      dispatch(authToken(token));
+      dispatch(getAuthToken(token));
     }
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      console.log(error.response.data.error);
+    } else {
+      console.log(error.message);
+    }
   }
 };
 
-export const validateToken = (dataToken) => async (dispatch) => {
+export const validateToken = (tokenData) => async (dispatch) => {
   try {
-    const decodeToken = await axios.post(`${baseURL}/verification`, dataToken);
-    dispatch(decodedToken(decodeToken.data));
+    const tokenDecoded = await axios.post(`${baseURL}/verification`, tokenData);
+    dispatch(setDecodedToken(tokenDecoded.data));
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      console.log(error.response.data.error);
+    } else {
+      console.log(error.message);
+    }
   }
 };
