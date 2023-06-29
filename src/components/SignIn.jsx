@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { postSignIn } from "../redux/actions/users.js";
 import { handleSubmit, handleChange } from "../services/services.js";
 import s from "./SignIn.module.css";
@@ -54,6 +54,11 @@ const SignIn = () => {
               <button>Enviar</button>
             </div>
           </form>
+        </section>
+        <section>
+          <div>
+            <Link to="/signup">Registrarse</Link>
+          </div>
         </section>
       </div>
     </main>
