@@ -8,7 +8,7 @@ import s from "./SignUp.module.css";
 const SignUp = () => {
   const dispatch = useDispatch();
 
-  const [signUpUser, setSignUpUser] = useState({
+  const [userSignUp, setUserSignUp] = useState({
     name: "",
     email: "",
     password: "",
@@ -22,7 +22,7 @@ const SignUp = () => {
         </header>
         <section>
           <form
-            onSubmit={(e) => handleSubmit(e, dispatch, postSignUp, signUpUser)}
+            onSubmit={(e) => handleSubmit(e, dispatch, postSignUp, userSignUp)}
           >
             <div className={s.form_container}>
               <div className={s.input_container}>
@@ -30,8 +30,8 @@ const SignUp = () => {
                   name="name"
                   placeholder="Nombre *"
                   type="text"
-                  value={signUpUser.name}
-                  onChange={(e) => handleChange(e, setSignUpUser, signUpUser)}
+                  value={userSignUp.name}
+                  onChange={(e) => handleChange(e, setUserSignUp, userSignUp)}
                 />
               </div>
               <div className={s.input_container}>
@@ -39,8 +39,8 @@ const SignUp = () => {
                   name="email"
                   placeholder="Correo *"
                   type="text"
-                  value={signUpUser.email}
-                  onChange={(e) => handleChange(e, setSignUpUser, signUpUser)}
+                  value={userSignUp.email}
+                  onChange={(e) => handleChange(e, setUserSignUp, userSignUp)}
                 />
               </div>
               <div className={s.input_container}>
@@ -48,8 +48,8 @@ const SignUp = () => {
                   name="password"
                   placeholder="Contraseña *"
                   type="password"
-                  value={signUpUser.password}
-                  onChange={(e) => handleChange(e, setSignUpUser, signUpUser)}
+                  value={userSignUp.password}
+                  onChange={(e) => handleChange(e, setUserSignUp, userSignUp)}
                 />
               </div>
               <button>Enviar</button>
