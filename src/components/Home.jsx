@@ -14,6 +14,8 @@ const Home = () => {
               <div className={s.line}>
                 <p>Anotalo</p>
               </div>
+              <div className={s.line2}></div>
+              <div className={s.line3}></div>
             </div>
           </header>
         </section>
