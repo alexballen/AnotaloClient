@@ -23,3 +23,11 @@ export const decodedToken = (token) => {
   localStorage.setItem("token", JSON.stringify(decoded));
   return decoded;
 };
+
+export const handleHover = (setState) => {
+  setState(true);
+};
+
+export const handleMouseLeave = (setState) => {
+  setState(false);
+};
