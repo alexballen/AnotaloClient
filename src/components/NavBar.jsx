@@ -57,6 +57,7 @@ const NavBar = () => {
                   <button className={s.dropbtn}>
                     <FaUserLarge />
                   </button>
+                  <div className={s.linedrop}></div>
                   <div className={s.dropdown_content}>
                     {token && Object.keys(token).length > 0 ? (
                       <div className={s.logout_container}>
