@@ -118,7 +118,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: solid red 1px;
+  border: solid rgb(6, 6, 6) 1px;
   cursor: pointer;
 }
 
@@ -150,10 +150,37 @@
 
 .dropdown:hover .dropdown_content {
   display: block;
+  border-radius: 50%;
 }
 
 .dropdown:hover .dropbtn {
-  /*  background-color: #3e8e41; */
+  background-color: #f60505;
+}
+
+.linedrop {
+  position: relative;
+  border: 0.5px solid rgb(245, 27, 27);
+  border-radius: 50%;
+  width: 100px;
+  left: -20%;
+  animation: movedic 2s infinite linear;
+  transform-origin: top center;
+}
+
+@keyframes movedic {
+  0% {
+    transform: rotate(20deg);
+  }
+  50% {
+    transform: rotate(-20deg);
+  }
+  100% {
+    transform: rotate(20deg);
+  }
+}
+
+.dropdown:hover .linedrop {
+  animation: movedic;
 }
 
 .nav_link_sesion {
