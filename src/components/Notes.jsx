@@ -39,39 +39,56 @@ const Notes = () => {
     <main>
       <div className={s.container}>
         <section>
-          <div>
-            <main>
-              <div className={s.container}>
-                <section>
-                  <Link to="/addnote">Crear Nota</Link>
-                </section>
-              </div>
-            </main>
+          <div className={s.container_all_new_note}>
+            <div className={s.container_new_note}>
+              <Link to="/addnote">+</Link>
+            </div>
+            <div className={s.note_line1}></div>
+            <div className={s.note_line2}></div>
           </div>
         </section>
-        {allNotes?.map((note, index) => {
-          const utcDateTime = note.updatedAt;
-          const date = new Date(utcDateTime);
-          const colombiaDateTime = date.toLocaleString("en-US", {
-            timeZone: "America/Bogota",
-          });
+        <section>
+          <div className={s.container_all_notes_array}>
+            {allNotes?.map((note, index) => {
+              const utcDateTime = note.updatedAt;
+              const date = new Date(utcDateTime);
+              const colombiaDateTime = date.toLocaleString("en-US", {
+                timeZone: "America/Bogota",
+              });
 
-          return (
-            <div key={index}>
-              <Link to={"/editnote/" + note.id}>
-                <div>
-                  <p>Titulo: {note.title}</p>
+              return (
+                <div key={index} className={s.container_filter}>
+                  <Link to={"/editnote/" + note.id}>
+                    <div className={s.container_all_notes}>
+                      <div className={s.title_container}>
+                        <p> {note.title}</p>
+                      </div>
+                      <div className={s.container_date_importance}>
+                        <div className={s.date_container}>
+                          <p>{colombiaDateTime}</p>
+                        </div>
+                        <div>
+                          {note.importance === "high" ? (
+                            <button className={s.high}></button>
+                          ) : null}
+                          {note.importance === "medium" ? (
+                            <button className={s.medium}></button>
+                          ) : null}
+                          {note.importance === "low" ? (
+                            <button className={s.low}></button>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                  <div className={s.delete_container}>
+                    <DeleteNote noteId={note.id} />
+                  </div>
                 </div>
-                <div>
-                  <p>{colombiaDateTime}</p>
-                </div>
-              </Link>
-              <div>
-                <DeleteNote noteId={note.id} />
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        </section>
       </div>
     </main>
   );
