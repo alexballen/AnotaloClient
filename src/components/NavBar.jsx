@@ -17,7 +17,7 @@ const NavBar = () => {
   };
 
   const closeMenu = () => {
-    setIsOpen(false);
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -25,35 +25,27 @@ const NavBar = () => {
       <div className={s.container}>
         <section>
           <nav>
-            <div className={s.nav_container}>
-              <section>
-                <figure>
-                  <div
-                    className={s.hamburguer__menu}
-                    onClick={() => toggleMenu()}
-                  >
-                    {isOpen ? (
-                      <AiOutlineMenuUnfold
-                        className={s.menu_close}
-                        onClick={closeMenu}
-                      />
-                    ) : (
-                      <AiOutlineMenu className={s.menu_open} />
-                    )}
-                  </div>
-                </figure>
-              </section>
+            <div className={s.nav__container}>
+              <figure>
+                <div className={s.hamburguer__menu} onClick={toggleMenu}>
+                  {isOpen ? (
+                    <AiOutlineMenuUnfold className={s.menu__open} />
+                  ) : (
+                    <AiOutlineMenu className={s.menu__close} />
+                  )}
+                </div>
+              </figure>
               <div
                 className={`${s.items__menu__container} ${
                   isOpen ? s.show : ""
                 }`}
               >
                 <section>
-                  <div className={s.nav_der_container}>
-                    <div className={s.home_container}>
+                  <div className={s.nav__der__container}>
+                    <div className={s.home__container}>
                       <div className={s.line1}>
                         <a
-                          className={s.nav_link}
+                          className={s.nav__link}
                           href="/"
                           onMouseEnter={() => handleHover(setIsHoveredHome)}
                           onMouseLeave={() =>
@@ -70,10 +62,10 @@ const NavBar = () => {
                         }`}
                       ></div>
                     </div>
-                    <div className={s.notes_container}>
+                    <div className={s.notes__container}>
                       <div className={s.line1}>
                         <a
-                          className={s.nav_link}
+                          className={s.nav__link}
                           href="/notes"
                           onMouseEnter={() => handleHover(setIsHoveredNote)}
                           onMouseLeave={() =>
@@ -93,31 +85,37 @@ const NavBar = () => {
                   </div>
                 </section>
                 <section>
-                  <div className={s.dropdown_container}>
+                  <div className={s.dropdown__container}>
                     <div className={s.dropdown}>
                       <button className={s.dropbtn}>
                         <FaUserLarge />
                       </button>
                       <div className={s.linedrop}></div>
-                      <div className={s.dropdown_content}>
+                      <div className={s.dropdown__content}>
                         {token && Object.keys(token).length > 0 ? (
-                          <div className={s.logout_container}>
-                            <a className={s.nav_link_sesion} href="/logout">
+                          <div className={s.logout__container}>
+                            <a className={s.nav__link__sesion} href="/logout">
                               Cerrar Sesión
                             </a>
                           </div>
                         ) : (
                           <>
                             {!Object.keys(token).length > 0 && (
-                              <div className={s.signin_container}>
-                                <a className={s.nav_link_sesion} href="/signin">
+                              <div className={s.signin__container}>
+                                <a
+                                  className={s.nav__link__sesion}
+                                  href="/signin"
+                                >
                                   Inicio Sesión
                                 </a>
                               </div>
                             )}
                             {!Object.keys(token).length > 0 && (
-                              <div className={s.signin_container}>
-                                <a className={s.nav_link_sesion} href="/signup">
+                              <div className={s.signin__container}>
+                                <a
+                                  className={s.nav__link__sesion}
+                                  href="/signup"
+                                >
                                   Registrarse
                                 </a>
                               </div>
