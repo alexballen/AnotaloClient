@@ -88,7 +88,7 @@ const NavBar = () => {
                   <div className={s.dropdown__container}>
                     <div className={s.dropdown}>
                       <button className={s.dropbtn}>
-                        <FaUserLarge />
+                        <FaUserLarge className={s.FaUserLarge} />
                       </button>
                       <div className={s.linedrop}></div>
                       <div className={s.dropdown__content}>
@@ -100,26 +100,28 @@ const NavBar = () => {
                           </div>
                         ) : (
                           <>
-                            {!Object.keys(token).length > 0 && (
-                              <div className={s.signin__container}>
-                                <a
-                                  className={s.nav__link__sesion}
-                                  href="/signin"
-                                >
-                                  Inicio Sesión
-                                </a>
-                              </div>
-                            )}
-                            {!Object.keys(token).length > 0 && (
-                              <div className={s.signin__container}>
-                                <a
-                                  className={s.nav__link__sesion}
-                                  href="/signup"
-                                >
-                                  Registrarse
-                                </a>
-                              </div>
-                            )}
+                            <div className={s.nuevoArreglo}>
+                              {!Object.keys(token).length > 0 && (
+                                <div className={s.signin__container}>
+                                  <a
+                                    className={s.nav__link__sesion}
+                                    href="/signin"
+                                  >
+                                    Inicio Sesión
+                                  </a>
+                                </div>
+                              )}
+                              {!Object.keys(token).length > 0 && (
+                                <div className={s.signin__container}>
+                                  <a
+                                    className={s.nav__link__sesion}
+                                    href="/signup"
+                                  >
+                                    Registrarse
+                                  </a>
+                                </div>
+                              )}
+                            </div>
                           </>
                         )}
                       </div>
