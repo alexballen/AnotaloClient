@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { validateToken } from "../redux/actions/users";
@@ -35,6 +35,7 @@ const AddNote = () => {
     description: "",
     importance: "",
   });
+  console.log(note);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -108,6 +109,20 @@ const AddNote = () => {
     };
   }, [note]);
 
+  const textareaRef = useRef(null);
+
+  const handleTextareaChange = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    handleTextareaChange();
+  }, []);
+
   return (
     <div>
       <main>
@@ -115,7 +130,7 @@ const AddNote = () => {
           <section>
             <form>
               <div className={s.form_container}>
-                <div>
+                <div className={s.title_container}>
                   <input
                     type="text"
                     placeholder="Titulo"
@@ -124,26 +139,33 @@ const AddNote = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div>
-                  <input
+                <div className={s.description_container}>
+                  <textarea
+                    ref={textareaRef}
+                    id="myTextarea"
                     type="text"
                     placeholder="Descripcion"
                     name="description"
                     value={note.description}
                     onChange={handleChange}
+                    onInput={handleTextareaChange}
                   />
                 </div>
-                <div>
-                  <input
+                <div className={s.importance_container}>
+                  <select
                     type="text"
                     placeholder="Importancia"
                     name="importance"
                     value={note.importance}
                     onChange={handleChange}
-                  />
+                  >
+                    <option value="high">Alta</option>
+                    <option value="medium">Media</option>
+                    <option value="low">Baja</option>
+                  </select>
                 </div>
               </div>
-              <div>
+              <div className={s.button_container}>
                 <button type="button" onClick={handleCreateNote}>
                   Crear Nota
                 </button>
