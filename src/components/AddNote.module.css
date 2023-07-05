@@ -1,31 +1,43 @@
+* {
+  margin: 0px;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .form_container {
-  border: solid black 2px;
+  margin-top: 15px;
+}
+
+.title_container input {
+  border-radius: 15px 15px 0 0;
+}
+
+.description_container textarea {
+  cursor: pointer;
+  border: 0px;
+  border-radius: 0px;
+  width: 100%;
+  height: auto;
+  resize: none;
+  background-color: #fff;
+}
+
+.importance_container select {
+  width: 100px;
 }
 
 input {
   border: 0px;
+  border-radius: 0px;
 }
 
 input:focus {
   outline: none;
 }
 
-textarea {
-  width: 100%;
-  height: 100px;
-  border: 0px;
-  resize: none;
-}
-
-textarea:focus {
+.description_container textarea:focus {
   outline: none;
-}
-
-.description_container {
-  height: auto;
-}
-
-.description_container p {
-  background-color: red;
-  height: auto;
 }
