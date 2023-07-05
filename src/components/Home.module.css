@@ -99,3 +99,9 @@ body {
   padding: 10px;
   color: #fff;
 }
+
+@media (max-width: 768px) {
+  .title_container {
+    margin-top: 70px;
+  }
+}
