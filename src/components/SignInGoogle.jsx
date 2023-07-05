@@ -16,7 +16,7 @@ const SignInGoogle = () => {
         <div className={s.signin_google_container}>
           <button className={s.signin_button} onClick={handleAuthGoogle}>
             <FcGoogle />
-            Sign In with Google
+            Inicia sesión con Google
           </button>
         </div>
       </section>
