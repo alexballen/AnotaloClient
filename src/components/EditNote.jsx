@@ -116,7 +116,7 @@ const EditNote = () => {
                 </div>
               </div>
               <div>
-                <DeleteNote noteId={editNote?.id} />
+                <DeleteNote noteId={noteId} />
               </div>
             </form>
           </section>
