@@ -25,9 +25,9 @@ const SignIn = () => {
   return (
     <main>
       <div className={s.container}>
-        <header>
-          <p className={s.title}>Registrarse</p>
-        </header>
+        <section>
+          <p className={s.title}>Iniciar Sesion</p>
+        </section>
         <section>
           <form
             onSubmit={(e) => handleSubmit(e, dispatch, postSignIn, signInData)}
@@ -51,12 +51,14 @@ const SignIn = () => {
                   onChange={(e) => handleChange(e, setSignInData, signInData)}
                 />
               </div>
-              <button>Enviar</button>
+              <div className={s.form_button_container}>
+                <button className={s.form_button}>Enviar</button>
+              </div>
             </div>
           </form>
         </section>
         <section>
-          <div>
+          <div className={s.signup_container}>
             <Link to="/signup">Registrarse</Link>
           </div>
         </section>
