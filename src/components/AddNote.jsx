@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { validateToken } from "../redux/actions/users";
 import { postCreateNote, getDbNotes } from "../redux/actions/notes";
+import { AiOutlineCheckCircle, AiOutlineClear } from "react-icons/ai";
 import s from "./AddNote.module.css";
 
 const AddNote = () => {
@@ -35,7 +36,6 @@ const AddNote = () => {
     description: "",
     importance: "",
   });
-  console.log(note);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -109,19 +109,19 @@ const AddNote = () => {
     };
   }, [note]);
 
-  const textareaRef = useRef(null);
+  const handleClean = (event) => {
+    event.preventDefault();
 
-  const handleTextareaChange = () => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    }
+    setNote({
+      title: "",
+      description: "",
+      importance: "",
+    });
+
+    setTimeout(() => {
+      alert("Se limpió la pantalla");
+    }, 100);
   };
-
-  useEffect(() => {
-    handleTextareaChange();
-  }, []);
 
   return (
     <div>
@@ -130,45 +130,61 @@ const AddNote = () => {
           <section>
             <form>
               <div className={s.form_container}>
-                <div className={s.title_container}>
-                  <input
-                    type="text"
-                    placeholder="Titulo"
-                    name="title"
-                    value={note.title}
-                    onChange={handleChange}
-                  />
+                <div className={s.title_description_container}>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Titulo"
+                      name="title"
+                      value={note.title}
+                      onChange={handleChange}
+                      className={s.title}
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      id="myTextarea"
+                      type="text"
+                      placeholder="Anotalo"
+                      name="description"
+                      value={note.description}
+                      onChange={handleChange}
+                      rows={note.description.split("\n").length}
+                      className={s.description}
+                    />
+                  </div>
                 </div>
-                <div className={s.description_container}>
-                  <textarea
-                    ref={textareaRef}
-                    id="myTextarea"
-                    type="text"
-                    placeholder="Descripcion"
-                    name="description"
-                    value={note.description}
-                    onChange={handleChange}
-                    onInput={handleTextareaChange}
-                  />
+                <div className={s.importance_clean_add_note_container}>
+                  <div className={s.importance_container}>
+                    <select
+                      type="text"
+                      placeholder="Importancia"
+                      name="importance"
+                      value={note.importance}
+                      onChange={handleChange}
+                      className={s.importance}
+                    >
+                      <option value="">Importancia</option>
+                      <option value="high">Alta</option>
+                      <option value="medium">Media</option>
+                      <option value="low">Baja</option>
+                    </select>
+                    <section>
+                      <div className={s.clean_container}>
+                        <AiOutlineClear
+                          onClick={handleClean}
+                          className={s.clean}
+                        />
+                      </div>
+                    </section>
+                  </div>
+                  <div className={s.add_note_container}>
+                    <AiOutlineCheckCircle
+                      onClick={handleCreateNote}
+                      className={s.add_note}
+                    />
+                  </div>
                 </div>
-                <div className={s.importance_container}>
-                  <select
-                    type="text"
-                    placeholder="Importancia"
-                    name="importance"
-                    value={note.importance}
-                    onChange={handleChange}
-                  >
-                    <option value="high">Alta</option>
-                    <option value="medium">Media</option>
-                    <option value="low">Baja</option>
-                  </select>
-                </div>
-              </div>
-              <div className={s.button_container}>
-                <button type="button" onClick={handleCreateNote}>
-                  Crear Nota
-                </button>
               </div>
             </form>
           </section>
