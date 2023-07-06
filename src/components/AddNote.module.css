@@ -9,35 +9,92 @@
 
 .form_container {
   margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.title_container input {
+.title_description_container {
+  width: 50%;
+}
+
+.title {
+  border: 0px;
   border-radius: 15px 15px 0 0;
 }
 
-.description_container textarea {
+.title:focus {
+  outline: none;
+}
+
+.description {
   cursor: pointer;
   border: 0px;
-  border-radius: 0px;
+  border-radius: 0px 0 15px 15px;
+  padding-bottom: 15px;
+  padding-left: 5px;
   width: 100%;
   height: auto;
   resize: none;
   background-color: #fff;
+  overflow: hidden;
 }
 
-.importance_container select {
-  width: 100px;
-}
-
-input {
-  border: 0px;
-  border-radius: 0px;
-}
-
-input:focus {
+.description:focus {
   outline: none;
 }
 
-.description_container textarea:focus {
-  outline: none;
+.importance_clean_add_note_container {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.importance_container {
+  display: flex;
+  align-items: center;
+}
+
+.importance {
+  width: 150px;
+  font-size: 18px;
+  color: rgb(25, 26, 31);
+  background-color: rgba(255, 0, 0, 0.608);
+  border-radius: 5px;
+  padding: 5px;
+  height: 35px;
+  border: solid 1px black;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.importance option {
+  background-color: rgb(29, 32, 29);
+  color: #fff;
+}
+
+.clean_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.clean {
+  width: 35px;
+  height: 35px;
+  color: rgba(255, 0, 0, 0.608);
+}
+
+.add_note_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add_note {
+  width: 35px;
+  height: 35px;
+  color: rgba(10, 242, 64, 0.608);
 }
