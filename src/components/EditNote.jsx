@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { saveToken, validateToken } from "../redux/actions/users";
 import { patchEditNote, getDbNotes } from "../redux/actions/notes";
 import DeleteNote from "./DeleteNote";
-import s from "./AddNote.module.css";
+import s from "./EditNote.module.css";
 
 const EditNote = () => {
   const dispatch = useDispatch();
@@ -87,36 +87,48 @@ const EditNote = () => {
           <section>
             <form onSubmit={handleSubmit}>
               <div className={s.form_container}>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Titulo"
-                    name="title"
-                    value={editNote?.title}
-                    onChange={handleChange}
-                  />
+                <div className={s.title_description_importance}>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Titulo"
+                      name="title"
+                      value={editNote?.title}
+                      onChange={handleChange}
+                      className={s.title}
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Descripcion"
+                      name="description"
+                      value={editNote?.description}
+                      onChange={handleChange}
+                      className={s.description}
+                    />
+                  </div>
+                  <div className={s.importance_delete_container}>
+                    <div className={s.importance_container}>
+                      <select
+                        type="text"
+                        placeholder="Importancia"
+                        name="importance"
+                        value={editNote.importance}
+                        onChange={handleChange}
+                        className={s.importance}
+                      >
+                        <option value="">Importancia</option>
+                        <option value="high">Alta</option>
+                        <option value="medium">Media</option>
+                        <option value="low">Baja</option>
+                      </select>
+                    </div>
+                    <div className={s.delete_container}>
+                      <DeleteNote className={s.delete} noteId={noteId} />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Descripcion"
-                    name="description"
-                    value={editNote?.description}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Importancia"
-                    name="importance"
-                    value={editNote?.importance}
-                    onChange={handleChange}
-                  />
-                </div>
-              </div>
-              <div>
-                <DeleteNote noteId={noteId} />
               </div>
             </form>
           </section>
