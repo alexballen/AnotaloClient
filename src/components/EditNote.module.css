@@ -1,0 +1,88 @@
+* {
+  margin: 0px;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.form_container {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title_description_importance {
+  width: 50%;
+}
+
+.title {
+  border: 0px;
+  border-radius: 15px 15px 0 0;
+}
+
+.title:focus {
+  outline: none;
+}
+
+.description {
+  cursor: pointer;
+  border: 0px;
+  border-radius: 0px 0 15px 15px;
+  padding-bottom: 15px;
+  padding-left: 5px;
+  width: 100%;
+  height: auto;
+  resize: none;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.description:focus {
+  outline: none;
+}
+
+.importance_delete_container {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.importance_container {
+  display: flex;
+  align-items: center;
+}
+
+.importance {
+  width: 150px;
+  font-size: 18px;
+  color: rgb(25, 26, 31);
+  background-color: rgba(255, 0, 0, 0.608);
+  border-radius: 5px;
+  padding: 5px;
+  height: 35px;
+  border: solid 1px black;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.importance option {
+  background-color: rgb(29, 32, 29);
+  color: #fff;
+}
+
+.delete_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete {
+  width: 35px;
+  height: 35px;
+  color: rgba(255, 0, 0, 0.608);
+}
