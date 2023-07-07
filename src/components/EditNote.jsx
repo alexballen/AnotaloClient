@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { saveToken, validateToken } from "../redux/actions/users";
@@ -13,6 +13,13 @@ const EditNote = () => {
   const { token } = useSelector((state) => state.token);
   const { decodedToken } = useSelector((state) => state.decodedToken);
   const { allNotes } = useSelector((state) => state.allNotes);
+
+  const textareaRef = useRef(null);
+  const [rows, setRows] = useState(1);
+  console.log(rows);
+  const [initialRows, setInitialRows] = useState(1);
+  console.log(initialRows);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     dispatch(saveToken());
@@ -39,14 +46,26 @@ const EditNote = () => {
   useEffect(() => {
     if (Object.keys(allNotes).length > 0) {
       const getNote = allNotes.find((note) => note.id === noteId);
+
       setEditNote({
         id: getNote.id,
         title: getNote.title,
         description: getNote.description,
         importance: getNote.importance,
       });
+
+      if (!isEditing) {
+        handleTextareaInput();
+      } else {
+        const storedRows = localStorage.getItem("initialRows");
+        if (storedRows) {
+          setInitialRows(Number(storedRows));
+        } else {
+          setInitialRows(getNote.description.split("\n").length);
+        }
+      }
     }
-  }, [allNotes]);
+  }, [allNotes, isEditing]);
 
   const [editNote, setEditNote] = useState({
     id: "",
@@ -71,6 +90,7 @@ const EditNote = () => {
 
   const handleEditNote = () => {
     dispatch(patchEditNote(userId, editNote));
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -79,6 +99,28 @@ const EditNote = () => {
       setIsDirty(false);
     }
   }, [isDirty]);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    textarea.addEventListener("input", handleTextareaInput);
+    return () => {
+      textarea.removeEventListener("input", handleTextareaInput);
+    };
+  }, []);
+
+  const handleTextareaInput = () => {
+    const textarea = textareaRef.current;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+
+    if (!isEditing) {
+      setRows(textarea.rows);
+    } else {
+      const currentRows = textarea.value.split("\n").length;
+      setInitialRows(currentRows);
+      localStorage.setItem("initialRows", currentRows);
+    }
+  };
 
   return (
     <div>
@@ -93,18 +135,20 @@ const EditNote = () => {
                       type="text"
                       placeholder="Titulo"
                       name="title"
-                      value={editNote?.title}
+                      defaultValue={editNote?.title}
                       onChange={handleChange}
                       className={s.title}
                     />
                   </div>
                   <div>
-                    <input
+                    <textarea
+                      ref={textareaRef}
                       type="text"
-                      placeholder="Descripcion"
+                      placeholder="Anotalo"
                       name="description"
                       value={editNote?.description}
                       onChange={handleChange}
+                      rows={isEditing ? initialRows : rows}
                       className={s.description}
                     />
                   </div>
@@ -139,3 +183,7 @@ const EditNote = () => {
 };
 
 export default EditNote;
+
+/*  useEffect(() => {
+   setRows(editNote.description.split("\n").length);
+ }, [editNote.description]); */
