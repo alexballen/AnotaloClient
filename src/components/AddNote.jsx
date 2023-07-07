@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { validateToken } from "../redux/actions/users";
@@ -12,6 +12,9 @@ const AddNote = () => {
 
   const { token } = useSelector((state) => state.token);
   const { decodedToken } = useSelector((state) => state.decodedToken);
+
+  const textareaRef = useRef(null);
+  const [rows, setRows] = useState(1);
 
   useEffect(() => {
     if (Object.keys(token).length) {
@@ -118,9 +121,28 @@ const AddNote = () => {
       importance: "",
     });
 
+    const textarea = textareaRef.current;
+    textarea.style.height = "auto";
+    textarea.rows = 1;
+
     setTimeout(() => {
       alert("Se limpió la pantalla");
     }, 100);
+  };
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    textarea.addEventListener("input", handleTextareaInput);
+    return () => {
+      textarea.removeEventListener("input", handleTextareaInput);
+    };
+  }, []);
+
+  const handleTextareaInput = () => {
+    const textarea = textareaRef.current;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+    setRows(textarea.rows);
   };
 
   return (
@@ -143,13 +165,13 @@ const AddNote = () => {
                   </div>
                   <div>
                     <textarea
-                      id="myTextarea"
+                      ref={textareaRef}
                       type="text"
                       placeholder="Anotalo"
                       name="description"
                       value={note.description}
                       onChange={handleChange}
-                      rows={note.description.split("\n").length}
+                      rows={rows}
                       className={s.description}
                     />
                   </div>
