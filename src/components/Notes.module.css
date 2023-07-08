@@ -96,6 +96,7 @@
   display: flex;
   align-items: center;
   color: #fff;
+  overflow: hidden;
 }
 
 .container_date_importance {
