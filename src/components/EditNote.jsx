@@ -15,11 +15,9 @@ const EditNote = () => {
   const { allNotes } = useSelector((state) => state.allNotes);
 
   const textareaRef = useRef(null);
+  const textTitleRef = useRef(null);
+
   const [rows, setRows] = useState(1);
-  console.log(rows);
-  const [initialRows, setInitialRows] = useState(1);
-  console.log(initialRows);
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     dispatch(saveToken());
@@ -53,19 +51,8 @@ const EditNote = () => {
         description: getNote.description,
         importance: getNote.importance,
       });
-
-      if (!isEditing) {
-        handleTextareaInput();
-      } else {
-        const storedRows = localStorage.getItem("initialRows");
-        if (storedRows) {
-          setInitialRows(Number(storedRows));
-        } else {
-          setInitialRows(getNote.description.split("\n").length);
-        }
-      }
     }
-  }, [allNotes, isEditing]);
+  }, [allNotes]);
 
   const [editNote, setEditNote] = useState({
     id: "",
@@ -90,7 +77,6 @@ const EditNote = () => {
 
   const handleEditNote = () => {
     dispatch(patchEditNote(userId, editNote));
-    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -112,15 +98,19 @@ const EditNote = () => {
     const textarea = textareaRef.current;
     textarea.style.height = "auto";
     textarea.style.height = `${textarea.scrollHeight}px`;
-
-    if (!isEditing) {
-      setRows(textarea.rows);
-    } else {
-      const currentRows = textarea.value.split("\n").length;
-      setInitialRows(currentRows);
-      localStorage.setItem("initialRows", currentRows);
-    }
+    setRows(textarea.rows);
   };
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    const textTitle = textTitleRef.current;
+    textarea.addEventListener("focus", handleTextareaInput);
+    textTitle.addEventListener("focus", handleTextareaInput);
+    return () => {
+      textarea.removeEventListener("focus", handleTextareaInput);
+      textTitle.addEventListener("focus", handleTextareaInput);
+    };
+  }, []);
 
   return (
     <div>
@@ -132,6 +122,7 @@ const EditNote = () => {
                 <div className={s.title_description_importance}>
                   <div>
                     <input
+                      ref={textTitleRef}
                       type="text"
                       placeholder="Titulo"
                       name="title"
@@ -148,7 +139,7 @@ const EditNote = () => {
                       name="description"
                       value={editNote?.description}
                       onChange={handleChange}
-                      rows={isEditing ? initialRows : rows}
+                      rows={rows}
                       className={s.description}
                     />
                   </div>
@@ -183,7 +174,3 @@ const EditNote = () => {
 };
 
 export default EditNote;
-
-/*  useEffect(() => {
-   setRows(editNote.description.split("\n").length);
- }, [editNote.description]); */
