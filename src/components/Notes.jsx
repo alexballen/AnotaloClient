@@ -55,7 +55,6 @@ const Notes = () => {
               const colombiaDateTime = date.toLocaleString("en-US", {
                 timeZone: "America/Bogota",
               });
-
               return (
                 <div key={index} className={s.container_filter}>
                   <Link to={"/editnote/" + note.id}>
