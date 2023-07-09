@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { validateToken } from "../redux/actions/users";
 import { postCreateNote, getDbNotes } from "../redux/actions/notes";
 import { AiOutlineCheckCircle, AiOutlineClear } from "react-icons/ai";
+import Swal from "sweetalert2";
 import s from "./AddNote.module.css";
 
 const AddNote = () => {
@@ -79,24 +80,42 @@ const AddNote = () => {
   }, [navigate, note]);
 
   const handleCreateNote = () => {
-    if (note.title || note.description) {
-      let updatedNote = { ...note };
-
-      if (!note.title && note.description) {
-        const getPartOfText = note.description.split(" ");
-        const getAndBindText = getPartOfText.slice(0, 4).join(" ");
-        updatedNote.title = getAndBindText;
-      }
-
-      dispatch(postCreateNote(decodedToken.id, updatedNote));
-
-      setNote({
-        title: "",
-        description: "",
-        importance: "",
+    if (note.title.length || note.description.length) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Tu nota ha sido creada",
+        showConfirmButton: false,
+        timer: 1500,
       });
+      setTimeout(() => {
+        if (note.title || note.description) {
+          let updatedNote = { ...note };
 
+          if (!note.title && note.description) {
+            const getPartOfText = note.description.split(" ");
+            const getAndBindText = getPartOfText.slice(0, 4).join(" ");
+            updatedNote.title = getAndBindText;
+          }
+
+          dispatch(postCreateNote(decodedToken.id, updatedNote));
+
+          setNote({
+            title: "",
+            description: "",
+            importance: "",
+          });
+        }
+      }, 1500);
       navigate("/notes");
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Nota no puede estar vacia",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -114,20 +133,58 @@ const AddNote = () => {
 
   const handleClean = (event) => {
     event.preventDefault();
+    if (note.title.length || note.description.length) {
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger",
+        },
+        buttonsStyling: false,
+      });
 
-    setNote({
-      title: "",
-      description: "",
-      importance: "",
-    });
+      swalWithBootstrapButtons
+        .fire({
+          title: "Desea limpiar el contenido",
+          text: "¡No podrás revertir esto!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "¡Sí, bórralo!",
+          cancelButtonText: "¡No, cancela!",
+          reverseButtons: true,
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            setNote({
+              title: "",
+              description: "",
+              importance: "",
+            });
 
-    const textarea = textareaRef.current;
-    textarea.style.height = "auto";
-    textarea.rows = 1;
-
-    setTimeout(() => {
-      alert("Se limpió la pantalla");
-    }, 100);
+            const textarea = textareaRef.current;
+            textarea.style.height = "auto";
+            textarea.rows = 1;
+            swalWithBootstrapButtons.fire(
+              "¡Eliminado!",
+              "El contenido de la nota ha sido eliminado.",
+              "success"
+            );
+          } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire(
+              "Cancelado",
+              "Su informacion esta a salvo¡",
+              "error"
+            );
+          }
+        });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Nota esta vacia, no hay nada que limpiar",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   useEffect(() => {
