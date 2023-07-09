@@ -10,7 +10,6 @@
   margin-bottom: 10px;
   padding: 1px;
   border-radius: 10px;
-  /* background-color: rgb(226, 226, 236); */
 }
 
 .container_all_new_note {
@@ -70,33 +69,46 @@
 
 .container_filter {
   margin-top: 10px;
-  width: 250px;
-  background-color: rgb(36, 36, 46);
-  padding: 3px;
-  border-radius: 10px;
+  width: 300px;
+  padding: 5px;
+  border-radius: 15px;
   margin: 5px;
-  margin-bottom: 5px;
   display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: rgb(37, 37, 44);
 }
 
 .container_filter a {
   text-decoration: none;
-  width: 100%;
-  font-size: 18px;
+  width: 80%;
+  font-size: 20px;
 }
 
 .container_all_notes {
   display: flex;
   flex-direction: column;
+  height: 70px;
 }
 
 .title_container {
   border-radius: 10px;
-  padding: 3px;
+  padding: 5px;
   display: flex;
+  justify-content: center;
   align-items: center;
   color: #fff;
   overflow: hidden;
+  background-color: rgb(39, 39, 47);
+  border: solid 1px rgb(30, 30, 36);
+}
+
+.title_container p {
+  overflow: hidden;
+  width: 220px;
+  height: 40px;
+  padding: 5px;
 }
 
 .container_date_importance {
