@@ -15,9 +15,7 @@ const DeleteNote = ({ noteId }) => {
 
   return (
     <div className={s.container}>
-      <button className={s.button_container} onClick={handleDeleteNote}>
-        <FaRegTrashCan />
-      </button>
+      <FaRegTrashCan className={s.delete} onClick={handleDeleteNote} />
     </div>
   );
 };
