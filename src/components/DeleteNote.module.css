@@ -4,12 +4,13 @@
 }
 
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.button_container {
-  background-color: transparent;
-  color: #fff;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+.delete {
+  width: 28px;
+  height: 28px;
+  color: rgba(255, 0, 0, 0.608);
 }
