@@ -30,13 +30,13 @@ const DeleteNote = ({ noteId }) => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          navigate("/notes");
+          /* navigate("/notes"); */
           dispatch(deleteNote(noteId));
-          swalWithBootstrapButtons.fire(
-            "¡Eliminada!",
-            "La nota ha sido eliminada.",
-            "success"
-          );
+          swalWithBootstrapButtons
+            .fire("¡Eliminada!", "La nota ha sido eliminada.", "success")
+            .then(() => {
+              navigate("/notes");
+            });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire(
             "Cancelado",
