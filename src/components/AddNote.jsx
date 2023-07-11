@@ -5,6 +5,8 @@ import { validateToken } from "../redux/actions/users";
 import { postCreateNote, getDbNotes } from "../redux/actions/notes";
 import { AiOutlineCheckCircle, AiOutlineClear } from "react-icons/ai";
 import Swal from "sweetalert2";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import dayjs from "dayjs";
 import s from "./AddNote.module.css";
 
 const AddNote = () => {
@@ -39,6 +41,7 @@ const AddNote = () => {
     title: "",
     description: "",
     importance: "",
+    reminder: null,
   });
 
   const handleChange = (e) => {
@@ -91,6 +94,10 @@ const AddNote = () => {
       setTimeout(() => {
         if (note.title || note.description) {
           let updatedNote = { ...note };
+          console.log(updatedNote);
+          if (updatedNote.reminder) {
+            updatedNote.reminder = updatedNote.reminder.toISOString();
+          }
 
           if (!note.title && note.description) {
             const getPartOfText = note.description.split(" ");
@@ -202,6 +209,18 @@ const AddNote = () => {
     setRows(textarea.rows);
   };
 
+  /* const [valueDate, setValueDate] = useState(null); */
+  const today = dayjs();
+
+  const handleDateTimeChange = (selectedDate) => {
+    setNote((prevNote) => ({
+      ...prevNote,
+      reminder: selectedDate, // Actualizar solo el campo 'reminder'
+    }));
+  };
+
+  const isInCurrentMonth = (date) => date.get("month") === dayjs().get("month");
+
   return (
     <div>
       <main>
@@ -265,6 +284,21 @@ const AddNote = () => {
                   </div>
                 </div>
               </div>
+              <section>
+                <div className={s.notification_container}>
+                  <div className={s.DateTimePicker}>
+                    <DateTimePicker
+                      format="DD-MM-YYYY hh:mm a"
+                      defaultValue={today}
+                      shouldDisableMonth={isInCurrentMonth}
+                      value={note.reminder}
+                      onChange={handleDateTimeChange}
+                      views={["year", "month", "day", "hours", "minutes"]}
+                      openTo="month"
+                    />
+                  </div>
+                </div>
+              </section>
             </form>
           </section>
         </div>
