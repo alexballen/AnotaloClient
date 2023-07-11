@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { saveToken, validateToken } from "../redux/actions/users";
 import { patchEditNote, getDbNotes } from "../redux/actions/notes";
 import DeleteNote from "./DeleteNote";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import dayjs from "dayjs";
 import s from "./EditNote.module.css";
 
 const EditNote = () => {
@@ -42,23 +44,29 @@ const EditNote = () => {
   }, [dispatch, decodedToken]);
 
   useEffect(() => {
-    if (Object.keys(allNotes).length > 0) {
-      const getNote = allNotes.find((note) => note.id === noteId);
+    if (noteId) {
+      if (Object.keys(allNotes).length > 0) {
+        const getNote = allNotes.find((note) => note.id === noteId);
+        console.log(getNote);
 
-      setEditNote({
-        id: getNote.id,
-        title: getNote.title,
-        description: getNote.description,
-        importance: getNote.importance,
-      });
+        if (getNote) {
+          setEditNote({
+            id: getNote.id,
+            title: getNote.title,
+            description: getNote.description,
+            importance: getNote.importance,
+          });
+        }
+      }
     }
-  }, [allNotes]);
+  }, [allNotes, noteId]);
 
   const [editNote, setEditNote] = useState({
     id: "",
     title: "",
     description: "",
     importance: "",
+    reminder: null,
   });
 
   const [isDirty, setIsDirty] = useState(false);
@@ -111,6 +119,12 @@ const EditNote = () => {
       textTitle.addEventListener("focus", handleTextareaInput);
     };
   }, []);
+
+  const [value, setValue] = useState({});
+  console.log(value);
+  const today = dayjs();
+
+  const isInCurrentMonth = (date) => date.get("month") === dayjs().get("month");
 
   return (
     <div>
@@ -166,6 +180,21 @@ const EditNote = () => {
                 </div>
               </div>
             </form>
+          </section>
+          <section>
+            <div className={s.notification_container}>
+              <div className={s.DateTimePicker}>
+                <DateTimePicker
+                  format="DD-MM-YYYY hh:mm a"
+                  defaultValue={today}
+                  shouldDisableMonth={isInCurrentMonth}
+                  value={value}
+                  onChange={(newValue) => setValue(newValue)}
+                  views={["year", "month", "day", "hours", "minutes"]}
+                  openTo="month"
+                />
+              </div>
+            </div>
           </section>
         </div>
       </main>
