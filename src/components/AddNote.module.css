@@ -100,3 +100,16 @@
   height: 35px;
   color: rgba(10, 242, 64, 0.608);
 }
+
+.notification_container {
+  /* background-color: #fff; */
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  width: 100%;
+  height: auto;
+}
+
+.DateTimePicker {
+  background-color: #fff;
+}
