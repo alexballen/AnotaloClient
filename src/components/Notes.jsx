@@ -35,6 +35,26 @@ const Notes = () => {
     }
   }, [dispatch, decodedToken]);
 
+  /*  useEffect(() => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("Permiso de notificación concedido");
+        }
+      });
+    }
+    const showNotification = (title, options) => {
+      if (Notification.permission === "granted") {
+        new Notification(title, options);
+      }
+    };
+
+    showNotification("Recordatorio", {
+      body: "Tu nota tiene una fecha de vencimiento cercana",
+      icon: "/path/to/notification-icon.png",
+    });
+  }, []); */
+
   return (
     <main>
       <div className={s.container}>
