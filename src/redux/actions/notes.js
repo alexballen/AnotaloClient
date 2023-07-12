@@ -22,6 +22,7 @@ export const getDbNotes = (userEmail) => async (dispatch) => {
 };
 
 export const postCreateNote = (userId, dataNewNote) => async (dispatch) => {
+  console.log(dataNewNote);
   try {
     const createNote = await axios.post(
       `${baseURL}/notes/${userId}`,
@@ -52,11 +53,13 @@ export const deleteNote = (noteId) => async (dispatch) => {
 
 export const patchEditNote = (noteId, dataNewNote) => async (dispatch) => {
   try {
-    const editNote = await axios.patch(
-      `${baseURL}/notes/${noteId}`,
-      dataNewNote
-    );
-    dispatch(editNoteInDb(editNote.data.data));
+    if (Object.keys(dataNewNote.id).length) {
+      const editNote = await axios.patch(
+        `${baseURL}/notes/${noteId}`,
+        dataNewNote
+      );
+      dispatch(editNoteInDb(editNote.data.data));
+    }
   } catch (error) {
     if (error.response) {
       console.log(error.response.data.error);
