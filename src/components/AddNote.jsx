@@ -94,7 +94,6 @@ const AddNote = () => {
       setTimeout(() => {
         if (note.title || note.description) {
           let updatedNote = { ...note };
-          console.log(updatedNote);
           if (updatedNote.reminder) {
             updatedNote.reminder = updatedNote.reminder.toISOString();
           }
@@ -209,13 +208,12 @@ const AddNote = () => {
     setRows(textarea.rows);
   };
 
-  /* const [valueDate, setValueDate] = useState(null); */
   const today = dayjs();
 
   const handleDateTimeChange = (selectedDate) => {
     setNote((prevNote) => ({
       ...prevNote,
-      reminder: selectedDate, // Actualizar solo el campo 'reminder'
+      reminder: selectedDate,
     }));
   };
 
