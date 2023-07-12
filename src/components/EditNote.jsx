@@ -5,8 +5,13 @@ import { saveToken, validateToken } from "../redux/actions/users";
 import { patchEditNote, getDbNotes } from "../redux/actions/notes";
 import DeleteNote from "./DeleteNote";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import s from "./EditNote.module.css";
+
+dayjs.extend(localizedFormat);
 
 const EditNote = () => {
   const dispatch = useDispatch();
@@ -47,14 +52,23 @@ const EditNote = () => {
     if (noteId) {
       if (Object.keys(allNotes).length > 0) {
         const getNote = allNotes.find((note) => note.id === noteId);
-        console.log(getNote);
 
         if (getNote) {
+          const fecha = new Date(getNote.reminder);
+
+          setEditNote((prevNote) => ({
+            ...prevNote,
+            reminder: fecha,
+          }));
+
           setEditNote({
             id: getNote.id,
             title: getNote.title,
             description: getNote.description,
             importance: getNote.importance,
+            reminder: getNote.reminder
+              ? new Date(getNote.reminder)
+              : new Date(getNote.reminder),
           });
         }
       }
@@ -69,10 +83,11 @@ const EditNote = () => {
     reminder: null,
   });
 
+  const initialReminder = editNote.reminder || new Date();
+
   const [isDirty, setIsDirty] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (name, value) => {
     setEditNote((prevNote) => ({ ...prevNote, [name]: value }));
     setIsDirty(true);
   };
@@ -93,6 +108,12 @@ const EditNote = () => {
       setIsDirty(false);
     }
   }, [isDirty]);
+
+  useEffect(() => {
+    if (editNote.reminder !== initialReminder) {
+      setIsDirty(true);
+    }
+  }, [editNote.reminder, initialReminder]);
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -120,12 +141,6 @@ const EditNote = () => {
     };
   }, []);
 
-  const [value, setValue] = useState({});
-  console.log(value);
-  const today = dayjs();
-
-  const isInCurrentMonth = (date) => date.get("month") === dayjs().get("month");
-
   return (
     <div>
       <main>
@@ -141,7 +156,7 @@ const EditNote = () => {
                       placeholder="Titulo"
                       name="title"
                       defaultValue={editNote?.title}
-                      onChange={handleChange}
+                      onChange={(e) => handleChange("title", e.target.value)}
                       className={s.title}
                     />
                   </div>
@@ -152,7 +167,9 @@ const EditNote = () => {
                       placeholder="Anotalo"
                       name="description"
                       value={editNote?.description}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        handleChange("description", e.target.value)
+                      }
                       rows={rows}
                       className={s.description}
                     />
@@ -164,7 +181,9 @@ const EditNote = () => {
                         placeholder="Importancia"
                         name="importance"
                         value={editNote.importance}
-                        onChange={handleChange}
+                        onChange={(e) =>
+                          handleChange("importance", e.target.value)
+                        }
                         className={s.importance}
                       >
                         <option value="">Importancia</option>
@@ -184,15 +203,15 @@ const EditNote = () => {
           <section>
             <div className={s.notification_container}>
               <div className={s.DateTimePicker}>
-                <DateTimePicker
-                  format="DD-MM-YYYY hh:mm a"
-                  defaultValue={today}
-                  shouldDisableMonth={isInCurrentMonth}
-                  value={value}
-                  onChange={(newValue) => setValue(newValue)}
-                  views={["year", "month", "day", "hours", "minutes"]}
-                  openTo="month"
-                />
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                    name="reminder"
+                    onChange={(newValue) => handleChange("reminder", newValue)}
+                    value={editNote.reminder}
+                    views={["year", "month", "day", "hours", "minutes"]}
+                    openTo="month"
+                  />
+                </LocalizationProvider>
               </div>
             </div>
           </section>
