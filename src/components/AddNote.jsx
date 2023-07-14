@@ -208,16 +208,12 @@ const AddNote = () => {
     setRows(textarea.rows);
   };
 
-  const today = dayjs();
-
   const handleDateTimeChange = (selectedDate) => {
     setNote((prevNote) => ({
       ...prevNote,
       reminder: selectedDate,
     }));
   };
-
-  const isInCurrentMonth = (date) => date.get("month") === dayjs().get("month");
 
   return (
     <div>
@@ -286,9 +282,6 @@ const AddNote = () => {
                 <div className={s.notification_container}>
                   <div className={s.DateTimePicker}>
                     <DateTimePicker
-                      format="DD-MM-YYYY hh:mm a"
-                      defaultValue={today}
-                      shouldDisableMonth={isInCurrentMonth}
                       value={note.reminder}
                       onChange={handleDateTimeChange}
                       views={["year", "month", "day", "hours", "minutes"]}
